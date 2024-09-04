@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Post } from "../types/Post";
-import { link } from "fs";
+import { Link } from "react-router-dom";
 
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -47,16 +47,18 @@ const PostList: React.FC = () => {
       )
     );
   };
-  console.log(posts);
+
   return (
     <div>
       <h2>Posts</h2>
       <ul>
         {posts.map((post) => (
           <li key={post.id}>
-            <h3>
-              {post.title} - {post.isPublished ? "Published" : "Unpublished"}
-            </h3>
+            <Link to={`/posts/${post.id}/edit`}>
+              <h3>
+                {post.title} - {post.isPublished ? "Published" : "Unpublished"}
+              </h3>
+            </Link>
             <button onClick={() => togglePublish(post)}>
               {post.isPublished ? "Unpublish" : "Publish"}
             </button>
