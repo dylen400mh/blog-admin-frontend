@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "posts/:id/edit",
+    path: "post-form",
     element: <PostForm />,
   },
 ]);

@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Post } from "../types/Post";
 
 const PostForm: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [post, setPost] = useState<Post>({ title: "", content: "" });
+  const [post, setPost] = useState<Post>({});
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (id) {
-      fetch(`${process.env.REACT_APP_BASE_URL}/posts/${id}`)
-        .then((response) => response.json())
-        .then((json) => setPost(json.post));
-    }
-  }, [id]);
+    console.log(location.state.post)
+    setPost(location.state.post);
+  }, [location]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
 
-    const method = id ? "PUT" : "POST";
-    const url = id
-      ? `${process.env.REACT_APP_BASE_URL}/posts/${id}`
+    const method = post ? "PUT" : "POST";
+    const url = post
+      ? `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`
       : `${process.env.REACT_APP_BASE_URL}/posts/`;
 
     fetch(url, {
@@ -38,7 +35,7 @@ const PostForm: React.FC = () => {
 
     navigate("/");
   };
-  console.log(post)
+
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="title">Title:</label>

@@ -54,7 +54,7 @@ const PostList: React.FC = () => {
       <ul>
         {posts.map((post) => (
           <li key={post.id}>
-            <Link to={`/posts/${post.id}/edit`}>
+            <Link to={"/post-form"} state={{ post }}>
               <h3>
                 {post.title} - {post.isPublished ? "Published" : "Unpublished"}
               </h3>
