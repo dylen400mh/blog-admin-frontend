@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import LoginForm from "./components/LoginForm";
+import PostList from "./components/PostList";
 
-function App() {
+const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -24,12 +25,12 @@ function App() {
     <div className="App">
       <h1>Blog Admin</h1>
       {isAuthenticated ? (
-        <div>hello</div>
+        <PostList />
       ) : (
         <LoginForm onLoginSuccess={handleLoginSuccess} />
       )}
     </div>
   );
-}
+};
 
 export default App;
