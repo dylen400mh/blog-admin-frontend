@@ -1,13 +1,11 @@
 import React, { useState } from "react";
+import { useAuth } from "../AuthContext";
 
-interface LoginFormProps {
-  onLogin: () => void;
-}
-
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
+const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { handleLogin } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         const { token } = data;
         localStorage.setItem("token", token);
         setError("");
-        onLogin();
+        handleLogin();
       })
       .catch((err) => {
         setError(err);

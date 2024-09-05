@@ -2,41 +2,24 @@ import React, { useEffect, useState } from "react";
 import LoginForm from "./components/LoginForm";
 import PostList from "./components/PostList";
 import { isTokenExpired } from "./isTokenExpired";
+import { useAuth } from "./AuthContext";
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, handleLogout, handleLogin } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token || isTokenExpired(token)) {
       handleLogout();
     } else {
-      setIsAuthenticated(true);
+      handleLogin();
     }
-  }, []);
-
-  const handleLogin = () => {
-    const token = localStorage.getItem("token") || "";
-    console.log("login " + token);
-
-    if (token && !isTokenExpired(token)) {
-      setIsAuthenticated(true);
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-  };
+  }, [handleLogin, handleLogout]);
 
   return (
     <div className="App">
       <h1>Blog Admin</h1>
-      {isAuthenticated ? (
-        <PostList onLogout={handleLogout} />
-      ) : (
-        <LoginForm onLogin={handleLogin} />
-      )}
+      {isAuthenticated ? <PostList /> : <LoginForm />}
     </div>
   );
 };

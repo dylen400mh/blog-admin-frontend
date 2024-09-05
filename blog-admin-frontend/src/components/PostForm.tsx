@@ -9,9 +9,10 @@ const PostForm: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location.state.post);
-    setPost(location.state.post);
-  }, [location]);
+    if (location.state) {
+      setPost(location.state.post);
+    }
+  }, [location.state]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

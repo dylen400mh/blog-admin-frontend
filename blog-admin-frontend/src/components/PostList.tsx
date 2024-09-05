@@ -2,21 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Post } from "../types/Post";
 import { Link } from "react-router-dom";
 import { isTokenExpired } from "../isTokenExpired";
+import { useAuth } from "../AuthContext";
 
-interface PostListProps {
-  onLogout: () => void;
-}
-const PostList: React.FC<PostListProps> = ({ onLogout }) => {
+const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const { handleLogout } = useAuth();
 
   // fetch posts
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!token || isTokenExpired(token)) {
-      onLogout();
+      handleLogout();
       return;
     }
 
@@ -33,7 +32,7 @@ const PostList: React.FC<PostListProps> = ({ onLogout }) => {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [handleLogout]);
 
   const togglePublish = async (post: Post) => {
     const token = localStorage.getItem("token");
@@ -75,11 +74,11 @@ const PostList: React.FC<PostListProps> = ({ onLogout }) => {
         ) : (
           posts.map((post) => (
             <li key={post.id}>
-              <Link to={"/post-form"} state={{ post, onLogout }}>
-                <h3>
-                  {post.title} -{" "}
-                  {post.isPublished ? "Published" : "Unpublished"}
-                </h3>
+              <h3>
+                {post.title} - {post.isPublished ? "Published" : "Unpublished"}
+              </h3>
+              <Link to={"/post-form"} state={{ post }}>
+                <button>Edit Post</button>
               </Link>
               <button onClick={() => togglePublish(post)}>
                 {post.isPublished ? "Unpublish" : "Publish"}
