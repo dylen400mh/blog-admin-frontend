@@ -3,6 +3,7 @@ import LoginForm from "./components/LoginForm";
 import PostList from "./components/PostList";
 import { isTokenExpired } from "./util/isTokenExpired";
 import { useAuth } from "./contexts/AuthContext";
+import Header from "./components/Header";
 
 const App: React.FC = () => {
   const { isAuthenticated, handleLogout, handleLogin } = useAuth();
@@ -18,7 +19,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1>Blog Admin</h1>
+      <Header />
       {isAuthenticated ? <PostList /> : <LoginForm />}
     </div>
   );

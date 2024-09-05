@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Post } from "../types/Post";
 import { isTokenExpired } from "../util/isTokenExpired";
 import { useAuth } from "../contexts/AuthContext";
+import Header from "./Header";
 
 const PostForm: React.FC = () => {
   const [post, setPost] = useState<Post>({});
@@ -31,7 +32,7 @@ const PostForm: React.FC = () => {
       method === "PUT"
         ? `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`
         : `${process.env.REACT_APP_BASE_URL}/posts/`;
-        
+
     fetch(url, {
       method,
       headers: {
@@ -48,23 +49,26 @@ const PostForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="title">Title:</label>
-      <input
-        type="text"
-        value={post.title}
-        onChange={(e) => setPost({ ...post, title: e.target.value })}
-        required
-      />
-      <label htmlFor="content">Content:</label>
-      <input
-        type="text"
-        value={post.content}
-        onChange={(e) => setPost({ ...post, content: e.target.value })}
-        required
-      />
-      <button type="submit">Save</button>
-    </form>
+    <div>
+      <Header />
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="title">Title:</label>
+        <input
+          type="text"
+          value={post.title}
+          onChange={(e) => setPost({ ...post, title: e.target.value })}
+          required
+        />
+        <label htmlFor="content">Content:</label>
+        <input
+          type="text"
+          value={post.content}
+          onChange={(e) => setPost({ ...post, content: e.target.value })}
+          required
+        />
+        <button type="submit">Save</button>
+      </form>
+    </div>
   );
 };
 
