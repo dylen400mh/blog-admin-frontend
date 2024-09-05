@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");

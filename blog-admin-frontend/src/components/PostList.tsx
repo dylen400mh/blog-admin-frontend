@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Post } from "../types/Post";
 import { Link } from "react-router-dom";
-import { isTokenExpired } from "../isTokenExpired";
-import { useAuth } from "../AuthContext";
+import { isTokenExpired } from "../util/isTokenExpired";
+import { useAuth } from "../contexts/AuthContext";
 
 const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);

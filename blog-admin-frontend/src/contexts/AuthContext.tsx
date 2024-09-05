@@ -1,5 +1,5 @@
 import React, { useState, createContext, useContext } from "react";
-import { isTokenExpired } from "./isTokenExpired";
+import { isTokenExpired } from "../util/isTokenExpired";
 
 interface AuthContextProps {
   isAuthenticated: boolean;

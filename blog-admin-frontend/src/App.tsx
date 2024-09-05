@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import LoginForm from "./components/LoginForm";
 import PostList from "./components/PostList";
-import { isTokenExpired } from "./isTokenExpired";
-import { useAuth } from "./AuthContext";
+import { isTokenExpired } from "./util/isTokenExpired";
+import { useAuth } from "./contexts/AuthContext";
 
 const App: React.FC = () => {
   const { isAuthenticated, handleLogout, handleLogin } = useAuth();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Post } from "../types/Post";
-import { isTokenExpired } from "../isTokenExpired";
+import { isTokenExpired } from "../util/isTokenExpired";
 
 const PostForm: React.FC = () => {
   const [post, setPost] = useState<Post>({});
