@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
 interface LoginFormProps {
-  onLoginSuccess: () => void;
+  onLogin: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -25,7 +25,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         const { token } = data;
         localStorage.setItem("token", token);
         setError("");
-        onLoginSuccess();
+        onLogin();
       })
       .catch((err) => {
         setError(err);

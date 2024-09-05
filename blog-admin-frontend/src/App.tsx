@@ -8,13 +8,20 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (!token || isTokenExpired(token)) {
+      handleLogout();
+    } else {
       setIsAuthenticated(true);
     }
   }, []);
 
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
+  const handleLogin = () => {
+    const token = localStorage.getItem("token") || "";
+    console.log("login " + token);
+
+    if (token && !isTokenExpired(token)) {
+      setIsAuthenticated(true);
+    }
   };
 
   const handleLogout = () => {
@@ -26,9 +33,9 @@ const App: React.FC = () => {
     <div className="App">
       <h1>Blog Admin</h1>
       {isAuthenticated ? (
-        <PostList />
+        <PostList onLogout={handleLogout} />
       ) : (
-        <LoginForm onLoginSuccess={handleLoginSuccess} />
+        <LoginForm onLogin={handleLogin} />
       )}
     </div>
   );

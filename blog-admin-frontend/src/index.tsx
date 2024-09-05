@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PostForm from "./components/PostForm";
+import LoginForm from "./components/LoginForm";
 
 const router = createBrowserRouter([
   {

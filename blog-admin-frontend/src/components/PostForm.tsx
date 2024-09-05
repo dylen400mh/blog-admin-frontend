@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Post } from "../types/Post";
+import { isTokenExpired } from "../isTokenExpired";
 
 const PostForm: React.FC = () => {
   const [post, setPost] = useState<Post>({});
@@ -8,13 +9,18 @@ const PostForm: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log(location.state.post)
+    console.log(location.state.post);
     setPost(location.state.post);
   }, [location]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+
+    if (!token || isTokenExpired(token)) {
+      location.state.onLogout();
+      return;
+    }
 
     const method = post ? "PUT" : "POST";
     const url = post
