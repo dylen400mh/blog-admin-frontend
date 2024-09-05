@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Post } from "../types/Post";
 import { isTokenExpired } from "../util/isTokenExpired";
+import { useAuth } from "../contexts/AuthContext";
 
 const PostForm: React.FC = () => {
   const [post, setPost] = useState<Post>({});
   const navigate = useNavigate();
   const location = useLocation();
+  const [method, setMethod] = useState("POST");
+  const { handleLogout } = useAuth();
 
   useEffect(() => {
     if (location.state) {
       setPost(location.state.post);
+      setMethod("PUT");
     }
   }, [location.state]);
 
@@ -19,15 +23,15 @@ const PostForm: React.FC = () => {
     const token = localStorage.getItem("token");
 
     if (!token || isTokenExpired(token)) {
-      location.state.onLogout();
+      handleLogout();
       return;
     }
 
-    const method = post ? "PUT" : "POST";
-    const url = post
-      ? `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`
-      : `${process.env.REACT_APP_BASE_URL}/posts/`;
-
+    const url =
+      method === "PUT"
+        ? `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`
+        : `${process.env.REACT_APP_BASE_URL}/posts/`;
+        
     fetch(url, {
       method,
       headers: {

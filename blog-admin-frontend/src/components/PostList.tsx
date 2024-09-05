@@ -65,9 +65,36 @@ const PostList: React.FC = () => {
     }
   };
 
+  const handleDeletePost = async (post: Post) => {
+    const token = localStorage.getItem("token");
+
+    if (!token || isTokenExpired(token)) {
+      handleLogout();
+      return;
+    }
+
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      setPosts(posts.filter((p) => p.id !== post.id));
+    }
+  };
+
   return (
     <div>
       <h2>Posts</h2>
+      <Link to={"/post-form"}>
+        <button>New Post</button>
+      </Link>
       <ul>
         {loading ? (
           <p>Loading...</p>
@@ -80,6 +107,9 @@ const PostList: React.FC = () => {
               <Link to={"/post-form"} state={{ post }}>
                 <button>Edit Post</button>
               </Link>
+              <button onClick={() => handleDeletePost(post)}>
+                Delete Post
+              </button>
               <button onClick={() => togglePublish(post)}>
                 {post.isPublished ? "Unpublish" : "Publish"}
               </button>

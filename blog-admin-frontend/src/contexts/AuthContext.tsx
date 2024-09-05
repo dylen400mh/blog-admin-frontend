@@ -16,7 +16,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleLogin = () => {
     const token = localStorage.getItem("token") || "";
-    console.log("login " + token);
 
     if (token && !isTokenExpired(token)) {
       setIsAuthenticated(true);
