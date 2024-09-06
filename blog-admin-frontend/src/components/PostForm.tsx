@@ -45,7 +45,11 @@ const PostForm: React.FC = () => {
       }),
     });
 
-    navigate("/");
+    if (method === "PUT") {
+      navigate(`/post/${post.id}`);
+    } else {
+      navigate("/");
+    }
   };
 
   return (

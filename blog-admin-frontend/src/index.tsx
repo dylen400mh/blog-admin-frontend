@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PostForm from "./components/PostForm";
 import { AuthProvider } from "./contexts/AuthContext";
+import PostInfo from "./components/PostInfo";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "post-form",
     element: <PostForm />,
+  },
+  {
+    path: "post/:id",
+    element: <PostInfo />,
   },
 ]);
 
