@@ -6,7 +6,13 @@ import { useAuth } from "../contexts/AuthContext";
 import Header from "./Header";
 
 const PostForm: React.FC = () => {
-  const [post, setPost] = useState<Post>({});
+  const [post, setPost] = useState<Post>({
+    id: 0,
+    title: "",
+    content: "",
+    isPublished: false,
+    createdAt: "",
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const [method, setMethod] = useState("POST");
