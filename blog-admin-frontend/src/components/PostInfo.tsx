@@ -200,6 +200,9 @@ const PostInfo: React.FC = () => {
                 <p>
                   Created At: {new Date(comment.createdAt).toLocaleString()}
                 </p>
+                <Link to="/comment-form" state={{ comment }}>
+                  <button>Edit Comment</button>
+                </Link>
                 <button onClick={() => handleDeleteComment(comment.id)}>
                   Delete Comment
                 </button>
