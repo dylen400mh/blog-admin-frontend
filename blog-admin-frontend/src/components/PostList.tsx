@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Post } from "../types/Post";
 import { Link } from "react-router-dom";
-import { isTokenExpired } from "../util/isTokenExpired";
 import { useAuth } from "../contexts/AuthContext";
 
 const PostList: React.FC = () => {
@@ -12,22 +11,50 @@ const PostList: React.FC = () => {
 
   // fetch posts
   useEffect(() => {
-    const token = validateToken();
+    const fetchPosts = async () => {
+      const token = validateToken();
+      if (!token) {
+        setError("Please login again");
+        setLoading(false);
+        return;
+      }
 
-    fetch(`${process.env.REACT_APP_BASE_URL}/posts`, {
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        setPosts(json.posts);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_URL}/posts`,
+          {
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: Failed to fetch posts`);
+        }
+
+        const data = await response.json();
+        setPosts(data.posts || []);
+        setError("");
+      } catch (err: any) {
+        setError(err.message || "An error occurred while fetching posts.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
   }, [validateToken]);
+
+  if (error) {
+    return <p>Error fetching posts: {error}</p>;
+  }
+
+  if (loading) {
+    return <p>Loading posts...</p>;
+  }
 
   return (
     <div>
@@ -35,20 +62,24 @@ const PostList: React.FC = () => {
       <Link to={"/post-form"}>
         <button>New Post</button>
       </Link>
-      <ul>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          posts.map((post) => (
-            <Link to={`/post/${post.id}`}>
-              <li key={post.id}>
-                {post.title} - {post.isPublished ? "Published" : "Unpublished"}
-              </li>
-            </Link>
-          ))
-        )}
-      </ul>
-      {error && <p>Error fetching posts: {error}</p>}
+      {posts.length === 0 ? (
+        <p>No posts available</p>
+      ) : (
+        <ul>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            posts.map((post) => (
+              <Link to={`/post/${post.id}`}>
+                <li key={post.id}>
+                  {post.title} -{" "}
+                  {post.isPublished ? "Published" : "Unpublished"}
+                </li>
+              </Link>
+            ))
+          )}
+        </ul>
+      )}
     </div>
   );
 };
