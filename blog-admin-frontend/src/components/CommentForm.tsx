@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Comment } from "../types/Comment";
-import { isTokenExpired } from "../util/isTokenExpired";
 import { useAuth } from "../contexts/AuthContext";
 import Header from "./Header";
 
@@ -13,34 +12,60 @@ const CommentForm: React.FC = () => {
     userId: 0,
     createdAt: "",
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+
   const navigate = useNavigate();
   const location = useLocation();
   const { validateToken } = useAuth();
 
   useEffect(() => {
-    if (location.state) {
+    if (location.state && location.state.comment) {
       setComment(location.state.comment);
     }
   }, [location.state]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const token = validateToken();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setLoading(true);
+      setError("");
 
-    fetch(`${process.env.REACT_APP_BASE_URL}/comments/${comment.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        content: comment.content,
-      }),
-    });
+      const token = validateToken();
+      if (!token) {
+        setError("Invalid or expired token. Please log in again.");
+        setLoading(false);
+        return;
+      }
 
-    navigate(`/post/${comment.postId}`);
-  };
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_URL}/comments/${comment.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              content: comment.content,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to update comment");
+        }
+
+        navigate(`/post/${comment.postId}`);
+      } catch (err: any) {
+        setError(err.message || "An error occurred while saving the comment.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [comment, validateToken, navigate]
+  );
 
   return (
     <div>
@@ -53,7 +78,10 @@ const CommentForm: React.FC = () => {
           onChange={(e) => setComment({ ...comment, content: e.target.value })}
           required
         />
-        <button type="submit">Save</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Save"}
+        </button>
+        {error && <p>{error}</p>}
       </form>
     </div>
   );
