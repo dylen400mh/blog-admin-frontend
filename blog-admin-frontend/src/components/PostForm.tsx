@@ -16,7 +16,7 @@ const PostForm: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [method, setMethod] = useState("POST");
-  const { handleLogout } = useAuth();
+  const { validateToken } = useAuth();
 
   useEffect(() => {
     if (location.state) {
@@ -27,12 +27,7 @@ const PostForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-
-    if (!token || isTokenExpired(token)) {
-      handleLogout();
-      return;
-    }
+    const token = validateToken();
 
     const url =
       method === "PUT"

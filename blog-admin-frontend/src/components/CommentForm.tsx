@@ -15,7 +15,7 @@ const CommentForm: React.FC = () => {
   });
   const navigate = useNavigate();
   const location = useLocation();
-  const { handleLogout } = useAuth();
+  const { validateToken } = useAuth();
 
   useEffect(() => {
     if (location.state) {
@@ -25,12 +25,8 @@ const CommentForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-
-    if (!token || isTokenExpired(token)) {
-      handleLogout();
-      return;
-    }
+    
+    const token = validateToken();
 
     fetch(`${process.env.REACT_APP_BASE_URL}/comments/${comment.id}`, {
       method: "PUT",

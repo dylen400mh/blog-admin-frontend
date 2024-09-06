@@ -8,16 +8,11 @@ const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  const { handleLogout } = useAuth();
+  const { validateToken } = useAuth();
 
   // fetch posts
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token || isTokenExpired(token)) {
-      handleLogout();
-      return;
-    }
+    const token = validateToken();
 
     fetch(`${process.env.REACT_APP_BASE_URL}/posts`, {
       mode: "cors",
@@ -32,7 +27,7 @@ const PostList: React.FC = () => {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [handleLogout]);
+  }, [validateToken]);
 
   return (
     <div>

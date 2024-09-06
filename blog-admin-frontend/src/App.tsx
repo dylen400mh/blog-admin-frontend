@@ -6,21 +6,25 @@ import { useAuth } from "./contexts/AuthContext";
 import Header from "./components/Header";
 
 const App: React.FC = () => {
-  const { isAuthenticated, handleLogout, handleLogin } = useAuth();
+  const { isAuthenticated, validateToken } =
+    useAuth();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token || isTokenExpired(token)) {
-      handleLogout();
-    } else {
-      handleLogin();
-    }
-  }, [handleLogin, handleLogout]);
+    validateToken();
+    setLoading(false);
+  }, [validateToken]);
 
   return (
     <div className="App">
       <Header />
-      {isAuthenticated ? <PostList /> : <LoginForm />}
+      {loading ? (
+        <div>Loading...</div>
+      ) : isAuthenticated ? (
+        <PostList />
+      ) : (
+        <LoginForm />
+      )}
     </div>
   );
 };

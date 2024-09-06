@@ -5,7 +5,7 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { handleLogin } = useAuth();
+  const { validateToken } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const LoginForm: React.FC = () => {
         const { token } = data;
         localStorage.setItem("token", token);
         setError("");
-        handleLogin();
+        validateToken();
       })
       .catch((err) => {
         setError(err);

@@ -15,15 +15,10 @@ const PostInfo: React.FC = () => {
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
   const { id } = useParams();
-  const { handleLogout } = useAuth();
+  const { validateToken } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token || isTokenExpired(token)) {
-      handleLogout();
-      return;
-    }
+    const token = validateToken();
 
     const fetchPost = async (postId: string | undefined) => {
       const response = await fetch(
@@ -95,7 +90,8 @@ const PostInfo: React.FC = () => {
   };
 
   const togglePublish = async (post: Post) => {
-    const token = localStorage.getItem("token");
+    const token = validateToken();
+
     const response = await fetch(
       `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`,
       {
@@ -119,12 +115,7 @@ const PostInfo: React.FC = () => {
   };
 
   const handleDeletePost = async (post: Post) => {
-    const token = localStorage.getItem("token");
-
-    if (!token || isTokenExpired(token)) {
-      handleLogout();
-      return;
-    }
+    const token = validateToken();
 
     const response = await fetch(
       `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`,
@@ -143,12 +134,7 @@ const PostInfo: React.FC = () => {
   };
 
   const handleDeleteComment = async (commentId: number) => {
-    const token = localStorage.getItem("token");
-
-    if (!token || isTokenExpired(token)) {
-      handleLogout();
-      return;
-    }
+    const token = validateToken();
 
     const response = await fetch(
       `${process.env.REACT_APP_BASE_URL}/comments/${commentId}`,
