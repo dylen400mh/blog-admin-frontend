@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Post } from "../types/Post";
-import { isTokenExpired } from "../util/isTokenExpired";
 import { useAuth } from "../contexts/AuthContext";
 import Header from "./Header";
 
@@ -13,6 +12,8 @@ const PostForm: React.FC = () => {
     isPublished: false,
     createdAt: "",
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
   const location = useLocation();
   const [method, setMethod] = useState("POST");
@@ -25,33 +26,55 @@ const PostForm: React.FC = () => {
     }
   }, [location.state]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = validateToken();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setLoading(true);
+      setError("");
 
-    const url =
-      method === "PUT"
-        ? `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`
-        : `${process.env.REACT_APP_BASE_URL}/posts/`;
+      const token = validateToken();
+      if (!token) {
+        setError("Invalid or expired token. Please log in again.");
+        setLoading(false);
+        return;
+      }
 
-    fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        title: post.title,
-        content: post.content,
-      }),
-    });
+      const url =
+        method === "PUT"
+          ? `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`
+          : `${process.env.REACT_APP_BASE_URL}/posts/`;
 
-    if (method === "PUT") {
-      navigate(`/post/${post.id}`);
-    } else {
-      navigate("/");
-    }
-  };
+      try {
+        const response = await fetch(url, {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: post.title,
+            content: post.content,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to ${method === "PUT" ? "update" : "create"} post.`
+          );
+        }
+        if (method === "PUT") {
+          navigate(`/post/${post.id}`);
+        } else {
+          navigate("/");
+        }
+      } catch (err: any) {
+        setError(err.message || "An error occurred while saving the post.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [method, post, validateToken, navigate]
+  );
 
   return (
     <div>
@@ -71,7 +94,11 @@ const PostForm: React.FC = () => {
           onChange={(e) => setPost({ ...post, content: e.target.value })}
           required
         />
-        <button type="submit">Save</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Save"}
+        </button>
+
+        {error && <p>{error}</p>}
       </form>
     </div>
   );
