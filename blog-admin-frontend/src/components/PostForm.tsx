@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Post } from "../types/Post";
 import { useAuth } from "../contexts/AuthContext";
 import Header from "./Header";
@@ -79,6 +79,7 @@ const PostForm: React.FC = () => {
   return (
     <div>
       <Header />
+      <Link to="/">Go Back</Link>
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title:</label>
         <input

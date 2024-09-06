@@ -188,6 +188,7 @@ const PostInfo: React.FC = () => {
   return (
     <div>
       <Header />
+      <Link to="/">Go Back</Link>
       {post ? (
         <div>
           <h2>

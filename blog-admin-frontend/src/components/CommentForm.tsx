@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Comment } from "../types/Comment";
 import { useAuth } from "../contexts/AuthContext";
 import Header from "./Header";
@@ -70,6 +70,7 @@ const CommentForm: React.FC = () => {
   return (
     <div>
       <Header />
+      <Link to={`/post/${comment.postId}`}>Go Back</Link>
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Comment:</label>
         <input
