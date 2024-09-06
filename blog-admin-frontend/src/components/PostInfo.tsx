@@ -1,65 +1,83 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Post } from "../types/Post";
 import { Comment } from "../types/Comment";
 import { User } from "../types/User";
 import Header from "./Header";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { isTokenExpired } from "../util/isTokenExpired";
 import { useAuth } from "../contexts/AuthContext";
 
 const PostInfo: React.FC = () => {
   const [post, setPost] = useState<Post | undefined>(undefined);
   const [comments, setComments] = useState<Comment[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-
   const [error, setError] = useState<string>("");
+  const [loadingPost, setLoadingPost] = useState<boolean>(true);
+  const [loadingComments, setLoadingComments] = useState<boolean>(true);
   const navigate = useNavigate();
   const { id } = useParams();
   const { validateToken } = useAuth();
 
   useEffect(() => {
     const token = validateToken();
+    if (!token) {
+      setError("Please log in again");
+      return;
+    }
 
-    const fetchPost = async (postId: string | undefined) => {
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/posts/${postId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+    const fetchPostAndComments = async () => {
+      try {
+        const postResponse = fetch(
+          `${process.env.REACT_APP_BASE_URL}/posts/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const commentsResponse = fetch(
+          `${process.env.REACT_APP_BASE_URL}/posts/${id}/comments`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const [postRes, commentsRes] = await Promise.all([
+          postResponse,
+          commentsResponse,
+        ]);
+
+        if (postRes.ok) {
+          const postData = await postRes.json();
+          setPost(postData.post);
+        } else if (postRes.status === 404) {
+          throw new Error("Post not found");
         }
-      );
 
-      if (response.ok) {
-        const data = await response.json();
-        setPost(data.post);
-      } else if (response.status === 404) {
-        setError("Post not found");
-        setPost(undefined);
-      }
-    };
+        if (commentsRes.ok) {
+          const commentsData = await commentsRes.json();
+          setComments(commentsData.comments);
 
-    const fetchComments = async (postId: string | undefined) => {
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/posts/${postId}/comments`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          const userIds = commentsData.comments.map(
+            (comment: Comment) => comment.userId
+          );
+          fetchUsers(userIds);
+        } else if (commentsRes.status === 404) {
+          throw new Error("Comments not found");
         }
-      );
 
-      if (response.ok) {
-        const data = await response.json();
-        setComments(data.comments);
-
-        const userIds = data.comments.map((comment: Comment) => comment.userId);
-        fetchUsers(userIds);
-      } else if (response.status === 404) {
-        setError("Post not found");
-        setComments([]);
+        setError("");
+      } catch (err: any) {
+        setError(
+          err.message || "An error occurred while fetching post and comments"
+        );
+      } finally {
+        setLoadingPost(false);
+        setLoadingComments(false);
       }
     };
 
@@ -80,39 +98,44 @@ const PostInfo: React.FC = () => {
       }
     };
 
-    fetchPost(id);
-    fetchComments(id);
-  }, [id]);
+    fetchPostAndComments();
+  }, [id, validateToken]);
 
-  const getUsername = (userId: number) => {
-    const user = users.find((user) => user.id === userId);
-    return user ? user.username : "";
-  };
+  const getUsername = useCallback(
+    (userId: number) => {
+      const user = users.find((user) => user.id === userId);
+      return user ? user.username : "";
+    },
+    [users]
+  );
 
-  const togglePublish = async (post: Post) => {
-    const token = validateToken();
+  const togglePublish = useCallback(
+    async (post: Post) => {
+      const token = validateToken();
 
-    const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`,
-      {
-        mode: "cors",
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          title: post.title,
-          content: post.content,
-          isPublished: !post.isPublished,
-        }),
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/posts/${post.id}`,
+        {
+          mode: "cors",
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title: post.title,
+            content: post.content,
+            isPublished: !post.isPublished,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setPost({ ...post, isPublished: !post.isPublished });
       }
-    );
-
-    if (response.ok) {
-      setPost({ ...post, isPublished: !post.isPublished });
-    }
-  };
+    },
+    [validateToken]
+  );
 
   const handleDeletePost = async (post: Post) => {
     const token = validateToken();
@@ -158,12 +181,14 @@ const PostInfo: React.FC = () => {
     return <p>{error}</p>;
   }
 
+  if (loadingPost || loadingComments) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <Header />
-      {!post ? (
-        <p>Loading...</p>
-      ) : (
+      {post ? (
         <div>
           <h2>
             {post.title} - {post.isPublished ? "Published" : "Unpublished"}
@@ -196,6 +221,8 @@ const PostInfo: React.FC = () => {
             ))}
           </ul>
         </div>
+      ) : (
+        <p>Post not found</p>
       )}
     </div>
   );
