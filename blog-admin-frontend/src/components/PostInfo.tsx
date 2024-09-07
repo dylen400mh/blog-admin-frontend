@@ -178,53 +178,100 @@ const PostInfo: React.FC = () => {
   };
 
   if (error) {
-    return <p>{error}</p>;
+    return <p className="text-red-500 text-sm mt-4">{error}</p>;
   }
 
   if (loadingPost || loadingComments) {
-    return <p>Loading...</p>;
+    return <p className="text-gray-600 mt-4">Loading...</p>;
   }
 
   return (
     <div>
-      <Header />
-      <Link to="/">Go Back</Link>
-      {post ? (
-        <div>
-          <h2>
-            {post.title} - {post.isPublished ? "Published" : "Unpublished"}
-          </h2>
-          <p>Created At: {new Date(post.createdAt).toLocaleString()}</p>
-          <p>{post.content}</p>
-          <Link to={"/post-form"} state={{ post }}>
-            <button>Edit Post</button>
-          </Link>
-          <button onClick={() => handleDeletePost(post)}>Delete Post</button>
-          <button onClick={() => togglePublish(post)}>
-            {post.isPublished ? "Unpublish" : "Publish"}
-          </button>
-          <h3>Comments</h3>
-          <ul>
-            {comments.map((comment) => (
-              <li key={comment.id}>
-                <p>{comment.content}</p>
-                <p>By: {getUsername(comment.userId)}</p>
-                <p>
-                  Created At: {new Date(comment.createdAt).toLocaleString()}
-                </p>
-                <Link to="/comment-form" state={{ comment }}>
-                  <button>Edit Comment</button>
-                </Link>
-                <button onClick={() => handleDeleteComment(comment.id)}>
-                  Delete Comment
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p>Post not found</p>
-      )}
+      <div>
+        <Header />
+      </div>
+      <div className="max-w-4xl mx-auto p-6">
+        <Link to="/" className="text-indigo-600 hover:underline">
+          Go Back
+        </Link>
+        {post ? (
+          <div className="mt-6 space-y-4">
+            <h2 className="text-3xl font-bold text-gray-800">
+              {post.title} -{" "}
+              <span
+                className={`${
+                  post.isPublished ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {post.isPublished ? "Published" : "Unpublished"}
+              </span>
+            </h2>
+            <p className="text-gray-500">
+              Created At: {new Date(post.createdAt).toLocaleString()}
+            </p>
+            <p className="text-gray-700">{post.content}</p>
+            <div className="space-x-4">
+              <Link
+                to={"/post-form"}
+                state={{ post }}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+              >
+                <button>Edit Post</button>
+              </Link>
+              <button
+                onClick={() => handleDeletePost(post)}
+                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+              >
+                Delete Post
+              </button>
+              <button
+                onClick={() => togglePublish(post)}
+                className={`px-4 py-2 rounded-md text-white transition ${
+                  post.isPublished
+                    ? "bg-yellow-500 hover:bg-yellow-600"
+                    : "bg-green-500 hover:bg-green-600"
+                }`}
+              >
+                {post.isPublished ? "Unpublish" : "Publish"}
+              </button>
+            </div>
+            <h3 className="text-2xl font-semibold mt-8">Comments</h3>
+            <ul className="space-y-4 mt-4">
+              {comments.map((comment) => (
+                <li
+                  key={comment.id}
+                  className="bg-white shadow-md rounded-md p-4 hover:bg-gray-50 transition"
+                >
+                  <p className="text-gray-800">{comment.content}</p>
+                  <p className="text-sm text-gray-500">
+                    By: {getUsername(comment.userId)}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Created At: {new Date(comment.createdAt).toLocaleString()}
+                  </p>
+                  <div className="space-x-4 mt-2">
+                    <Link
+                      to="/comment-form"
+                      state={{ comment }}
+                      className="text-blue-500 hover:underline"
+                    >
+                      <button>Edit Comment</button>
+                    </Link>
+                    <button
+                      onClick={() => handleDeleteComment(comment.id)}
+                      className="text-red-500 hover:underline"
+                    >
+                      Delete Comment
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p className="text-gray-500 text-lg mt-4">Post not found</p>
+        )}
+      </div>
     </div>
   );
 };

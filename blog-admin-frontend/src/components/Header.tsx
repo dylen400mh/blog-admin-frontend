@@ -5,9 +5,16 @@ const Header: React.FC = () => {
   const { isAuthenticated, handleLogout } = useAuth();
 
   return (
-    <header>
-      <h1>Blog Admin</h1>
-      {isAuthenticated && <button onClick={handleLogout}>Logout</button>}
+    <header className="bg-indigo-600 text-white p-4 flex justify-between items-center shadow-md">
+      <h1 className="text-xl font-bold">Blog Admin</h1>
+      {isAuthenticated && (
+        <button
+          onClick={handleLogout}
+          className="bg-white text-indigo-600 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors duration-200"
+        >
+          Logout
+        </button>
+      )}
     </header>
   );
 };
