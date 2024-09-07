@@ -108,11 +108,11 @@ const PostForm: React.FC = () => {
           >
             Content:
           </label>
-          <input
-            type="text"
+          <textarea
             value={post.content}
             onChange={(e) => setPost({ ...post, content: e.target.value })}
             required
+            rows={8}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
           <button

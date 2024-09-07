@@ -89,8 +89,8 @@ const CommentForm: React.FC = () => {
           >
             Comment:
           </label>
-          <input
-            type="text"
+          <textarea
+            rows={8}
             value={comment.content}
             onChange={(e) =>
               setComment({ ...comment, content: e.target.value })
