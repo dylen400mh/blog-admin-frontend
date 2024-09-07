@@ -19,7 +19,7 @@ const LoginForm: React.FC = () => {
       setLoading(true);
       setError("");
 
-      if (!validateEmail) {
+      if (!validateEmail(email)) {
         setError("Please enter a valid email address");
         setLoading(false);
         return;
