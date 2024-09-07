@@ -58,6 +58,9 @@ const PostForm: React.FC = () => {
         });
 
         if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error(`Error ${response.status}: Unauthorized`);
+          }
           throw new Error(
             `Failed to ${method === "PUT" ? "update" : "create"} post.`
           );

@@ -56,6 +56,8 @@ const PostInfo: React.FC = () => {
           setPost(postData.post);
         } else if (postRes.status === 404) {
           throw new Error("Post not found");
+        } else if (postRes.status === 401) {
+          throw new Error(`Error ${postRes.status}: Unauthorized`);
         }
 
         if (commentsRes.ok) {
@@ -68,6 +70,8 @@ const PostInfo: React.FC = () => {
           fetchUsers(userIds);
         } else if (commentsRes.status === 404) {
           throw new Error("Comments not found");
+        } else if (commentsRes.status === 401) {
+          throw new Error(`Error ${commentsRes.status}: Unauthorized`);
         }
 
         setError("");
@@ -95,6 +99,8 @@ const PostInfo: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setUsers(data.users);
+      } else if (response.status === 401) {
+        throw new Error(`Error ${response.status}: Unauthorized`);
       }
     };
 
