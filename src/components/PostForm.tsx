@@ -20,6 +20,12 @@ const PostForm: React.FC = () => {
   const { validateToken } = useAuth();
 
   useEffect(() => {
+    const token = validateToken();
+    if (!token) {
+      setError("Please log in again");
+      return;
+    }
+
     if (location.state) {
       setPost(location.state.post);
       setMethod("PUT");

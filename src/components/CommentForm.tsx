@@ -20,6 +20,12 @@ const CommentForm: React.FC = () => {
   const { validateToken } = useAuth();
 
   useEffect(() => {
+    const token = validateToken();
+    if (!token) {
+      setError("Please log in again");
+      return;
+    }
+
     if (location.state && location.state.comment) {
       setComment(location.state.comment);
     }
