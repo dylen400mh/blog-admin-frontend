@@ -184,11 +184,21 @@ const PostInfo: React.FC = () => {
   };
 
   if (error) {
-    return <p className="text-red-500 text-sm mt-4">{error}</p>;
+    return (
+      <div>
+        <Header />
+        <p className="text-red-500 text-sm mt-4">{error}</p>
+      </div>
+    );
   }
 
   if (loadingPost || loadingComments) {
-    return <p className="text-gray-600 mt-4">Loading...</p>;
+    return (
+      <div>
+        <Header />
+        <p className="text-gray-600 mt-4">Loading...</p>
+      </div>
+    );
   }
 
   return (
