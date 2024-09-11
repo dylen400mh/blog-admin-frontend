@@ -11,6 +11,7 @@ const PostForm: React.FC = () => {
     content: "",
     isPublished: false,
     createdAt: "",
+    updatedAt: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");

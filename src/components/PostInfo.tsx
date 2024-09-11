@@ -225,6 +225,9 @@ const PostInfo: React.FC = () => {
             <p className="text-gray-500">
               Created At: {new Date(post.createdAt).toLocaleString()}
             </p>
+            <p className="text-gray-500">
+              Last Edited: {new Date(post.updatedAt).toLocaleString()}
+            </p>
             <p className="text-gray-700">{post.content}</p>
             <div className="space-x-4">
               <Link
