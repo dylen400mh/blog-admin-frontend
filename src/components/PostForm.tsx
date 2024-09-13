@@ -23,7 +23,7 @@ const PostForm: React.FC = () => {
   useEffect(() => {
     const token = validateToken();
     if (!token) {
-      setError("Please log in again");
+      navigate("/");
       return;
     }
 
