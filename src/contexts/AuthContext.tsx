@@ -26,6 +26,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const validateToken = useCallback((): string | null => {
     const token = localStorage.getItem("token");
+    const verifyAdmin = async () => {
+      // verify that user is admin
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/verify-user`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 401) {
+        handleLogout();
+        return null;
+      }
+    };
+
+    verifyAdmin();
+
     if (!token || isTokenExpired(token)) {
       handleLogout();
       return null;
