@@ -20,7 +20,7 @@ const PostInfo: React.FC = () => {
   useEffect(() => {
     const token = validateToken();
     if (!token) {
-      setError("Please log in again");
+      navigate("/");
       return;
     }
 
@@ -105,7 +105,7 @@ const PostInfo: React.FC = () => {
     };
 
     fetchPostAndComments();
-  }, [id, validateToken]);
+  }, [id, validateToken, navigate]);
 
   const getUsername = useCallback(
     (userId: number) => {

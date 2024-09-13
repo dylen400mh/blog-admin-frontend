@@ -22,14 +22,14 @@ const CommentForm: React.FC = () => {
   useEffect(() => {
     const token = validateToken();
     if (!token) {
-      setError("Please log in again");
+      navigate("/");
       return;
     }
 
     if (location.state && location.state.comment) {
       setComment(location.state.comment);
     }
-  }, [location.state, validateToken]);
+  }, [location.state, validateToken, navigate]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {

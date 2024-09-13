@@ -23,7 +23,7 @@ const PostForm: React.FC = () => {
   useEffect(() => {
     const token = validateToken();
     if (!token) {
-      setError("Please log in again");
+      navigate("/");
       return;
     }
 
@@ -31,7 +31,7 @@ const PostForm: React.FC = () => {
       setPost(location.state.post);
       setMethod("PUT");
     }
-  }, [location.state, validateToken]);
+  }, [location.state, validateToken, navigate]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
