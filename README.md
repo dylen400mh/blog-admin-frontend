@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/01a96b6f-60ad-4f4e-9a2f-3ec3119ae2d4)
+
 # Blog Post Management Frontend
 
 This is the frontend for managing blog posts. It is designed to create, edit, publish, and manage posts. Comments can also be managed through this interface.
