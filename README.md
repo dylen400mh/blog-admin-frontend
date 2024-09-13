@@ -54,3 +54,5 @@ This application can be deployed on any hosting service for React apps (e.g., Ve
 
 ### Demo
 You can find a demo of the application deployed in [this video](https://www.youtube.com/watch?v=4OSidLXTCLw)
+
+If you would like to check out my blog, you can visit my [Portfolio](https://dylenbelanger.com)!
