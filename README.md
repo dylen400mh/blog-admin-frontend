@@ -18,12 +18,15 @@ This is the frontend for managing blog posts. It is designed to create, edit, pu
 ## Pages
 ### Dashboard
 Displays a list of all posts, showing their published status. You can create new posts or edit existing ones by clicking the post.
+![image](https://github.com/user-attachments/assets/3772ae91-dd71-4b4d-ab9d-b684bd8b6f60)
 
 ### New Post
 A form to create a new blog post. You can write the post title, content, and save it as either a published or unpublished post.
+![image](https://github.com/user-attachments/assets/ae86241f-98ad-4877-b876-4b8b83c9c465)
 
 ### Post/Comment Editing
 Allows you to view and manage a post and its comments. You can delete or edit inappropriate comments.
+![image](https://github.com/user-attachments/assets/30c83a7b-8e58-45ca-84f5-b12822c1820d)
 
 ## Getting Started
 
