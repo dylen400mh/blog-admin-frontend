@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/01a96b6f-60ad-4f4e-9a2f-3ec3119ae2d4)
+![image](https://github.com/user-attachments/assets/a2eef400-f1f5-47d3-848b-c778984bda31)
 
 # Blog Post Management Frontend
 
