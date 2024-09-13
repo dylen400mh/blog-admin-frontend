@@ -7,7 +7,7 @@ const PostList: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  const { validateToken } = useAuth();
+  const { validateToken, handleLogout } = useAuth();
 
   // fetch posts
   useEffect(() => {
@@ -33,7 +33,7 @@ const PostList: React.FC = () => {
 
         if (!response.ok) {
           if (response.status === 401) {
-            throw new Error(`Error ${response.status}: Unauthorized`);
+            handleLogout();
           }
           throw new Error(`Error ${response.status}: Failed to fetch posts`);
         }
