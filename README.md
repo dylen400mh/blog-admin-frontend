@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# Blog Post Management Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend for managing blog posts. It is designed to create, edit, publish, and manage posts. Comments can also be managed through this interface.
 
-## Available Scripts
+## Features
+- Create, edit, and delete blog posts
+- Publish and unpublish posts
+- View post status (published/unpublished)
+- Manage comments (edit, delete)
+- JWT authentication for protected actions (If the user is not an Admin, they will be unable to login)
 
-In the project directory, you can run:
+## Technology Stack
+- React (with TypeScript)
+- Tailwind CSS for styling
+- Fetch API to interact with the backend
+- JWT Authentication for secure routes
 
-### `npm start`
+## Pages
+### Dashboard
+Displays a list of all posts, showing their published status. You can create new posts or edit existing ones by clicking the post.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### New Post
+A form to create a new blog post. You can write the post title, content, and save it as either a published or unpublished post.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Post/Comment Editing
+Allows you to view and manage a post and its comments. You can delete or edit inappropriate comments.
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
+- Node.js
 
-### `npm run build`
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dylen400mh/blog-admin-frontend.git
+2. Install dependencies:
+   ```bash
+   npm install
+3. Setup environment variables (create a .env file):
+   ```plaintext
+   REACT_APP_BASE_URL=your_backend_api_url
+4. Run the development server
+   ```bash
+   npm run start
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Deployment
+This application can be deployed on any hosting service for React apps (e.g., Vercel, Netlify). Make sure to configure your environment variables for the production build.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Demo
+You can find a demo of the application deployed in [this video](https://www.youtube.com/watch?v=4OSidLXTCLw)
