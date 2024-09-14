@@ -4,6 +4,8 @@
 
 This is the frontend for managing blog posts. It is designed to create, edit, publish, and manage posts. Comments can also be managed through this interface.
 
+You can view the backend API [here](https://github.com/dylen400mh/blog-api)
+
 ## Features
 - Create, edit, and delete blog posts
 - Publish and unpublish posts
