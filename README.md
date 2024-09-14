@@ -1,46 +1,58 @@
-# Getting Started with Create React App
+![image](https://github.com/user-attachments/assets/a2eef400-f1f5-47d3-848b-c778984bda31)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Blog Post Management Frontend
 
-## Available Scripts
+This is the frontend for managing blog posts. It is designed to create, edit, publish, and manage posts. Comments can also be managed through this interface.
 
-In the project directory, you can run:
+## Features
+- Create, edit, and delete blog posts
+- Publish and unpublish posts
+- View post status (published/unpublished)
+- Manage comments (edit, delete)
+- JWT authentication for protected actions (If the user is not an Admin, they will be unable to login)
 
-### `npm start`
+## Technology Stack
+- React (with TypeScript)
+- Tailwind CSS for styling
+- Fetch API to interact with the backend
+- JWT Authentication for secure routes
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Pages
+### Dashboard
+Displays a list of all posts, showing their published status. You can create new posts or edit existing ones by clicking the post.
+![image](https://github.com/user-attachments/assets/3772ae91-dd71-4b4d-ab9d-b684bd8b6f60)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### New Post
+A form to create a new blog post. You can write the post title, content, and save it as either a published or unpublished post.
+![image](https://github.com/user-attachments/assets/ae86241f-98ad-4877-b876-4b8b83c9c465)
 
-### `npm test`
+### Post/Comment Editing
+Allows you to view and manage a post and its comments. You can delete or edit inappropriate comments.
+![image](https://github.com/user-attachments/assets/30c83a7b-8e58-45ca-84f5-b12822c1820d)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+### Prerequisites
+- Node.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dylen400mh/blog-admin-frontend.git
+2. Install dependencies:
+   ```bash
+   npm install
+3. Setup environment variables (create a .env file):
+   ```plaintext
+   REACT_APP_BASE_URL=your_backend_api_url
+4. Run the development server
+   ```bash
+   npm run start
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Deployment
+This application can be deployed on any hosting service for React apps (e.g., Vercel, Netlify). Make sure to configure your environment variables for the production build.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Demo
+You can find a demo of the application deployed in [this video](https://www.youtube.com/watch?v=4OSidLXTCLw)
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+If you would like to check out my blog, you can visit my [Portfolio](https://dylenbelanger.com)!
