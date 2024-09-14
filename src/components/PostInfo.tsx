@@ -182,7 +182,7 @@ const PostInfo: React.FC = () => {
       );
     }
   };
-
+  console.log(comments);
   if (error) {
     return (
       <div>
@@ -228,7 +228,7 @@ const PostInfo: React.FC = () => {
             <p className="text-gray-500">
               Last Edited: {new Date(post.updatedAt).toLocaleString()}
             </p>
-            <p className="text-gray-700">{post.content}</p>
+            <p className="text-gray-700 whitespace-pre-wrap">{post.content}</p>
             <div className="space-x-4">
               <Link
                 to={"/post-form"}
@@ -261,7 +261,9 @@ const PostInfo: React.FC = () => {
                   key={comment.id}
                   className="bg-white shadow-md rounded-md p-4 hover:bg-gray-50 transition"
                 >
-                  <p className="text-gray-800">{comment.content}</p>
+                  <p className="text-gray-800 whitespace-pre-wrap">
+                    {comment.content}
+                  </p>
                   <p className="text-sm text-gray-500">
                     By: {getUsername(comment.userId)}
                   </p>
